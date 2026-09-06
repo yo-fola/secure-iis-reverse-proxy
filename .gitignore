@@ -1,0 +1,25 @@
+# Certificates and private keys
+*.pfx
+*.p12
+*.pem
+*.key
+*.cer
+*.crt
+
+# Environment and secrets
+.env
+.env.*
+secrets/
+credentials/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# IIS logs and local output
+logs/
+*.log
+
+# Editor files
+.vscode/
+.idea/
