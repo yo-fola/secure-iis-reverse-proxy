@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <system.webServer>
+    <rewrite>
+      <rules>
+        <rule name="Redirect HTTP to HTTPS" stopProcessing="true">
+          <match url="(.*)" />
+          <conditions logicalGrouping="MatchAll" trackAllCaptures="false">
+            <add input="{HTTPS}" pattern="^OFF$" ignoreCase="true" />
+          </conditions>
+          <action
+            type="Redirect"
+            url="https://{HTTP_HOST}/{R:1}"
+            appendQueryString="true"
+            redirectType="Permanent" />
+        </rule>
+
+        <!--
+          Replace 127.0.0.1:8080 with the real private backend.
+          Narrow the match pattern when only one route should be proxied.
+        -->
+        <rule name="Reverse Proxy to Backend" stopProcessing="true">
+          <match url="(.*)" />
+          <action
+            type="Rewrite"
+            url="http://127.0.0.1:8080/{R:1}"
+            appendQueryString="true" />
+        </rule>
+      </rules>
+    </rewrite>
+
+    <!-- Add HSTS only after HTTPS is confirmed stable. -->
+    <httpProtocol>
+      <customHeaders>
+        <remove name="Strict-Transport-Security" />
+        <add
+          name="Strict-Transport-Security"
+          value="max-age=31536000; includeSubDomains" />
+        <remove name="X-Content-Type-Options" />
+        <add name="X-Content-Type-Options" value="nosniff" />
+        <remove name="Referrer-Policy" />
+        <add name="Referrer-Policy" value="strict-origin-when-cross-origin" />
+      </customHeaders>
+    </httpProtocol>
+  </system.webServer>
+</configuration>
