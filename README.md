@@ -1,8 +1,17 @@
 # 🔐 Secure IIS & Reverse Proxy
 
+![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?logo=windows11&logoColor=white)
+![Web Server](https://img.shields.io/badge/Web%20Server-IIS-5E5E5E?logo=microsoft&logoColor=white)
+![HTTPS](https://img.shields.io/badge/HTTPS-Enabled-1F883D?logo=letsencrypt&logoColor=white)
+![Reverse Proxy](https://img.shields.io/badge/Reverse%20Proxy-ARR%20%2B%20URL%20Rewrite-6F42C1)
+![Documentation](https://img.shields.io/badge/Documentation-Complete-0969DA)
+
 A practical Windows/IIS project showing how to publish a website securely, issue and renew a trusted TLS certificate with win-acme and Let's Encrypt, force HTTPS, enable HSTS, and place IIS in front of an application service with Application Request Routing (ARR).
 
-> This repository is written with example domains, IP addresses, and backend ports. Replace them with values from your environment.
+> [!NOTE]
+> This repository uses example domains, IP addresses, and backend ports. Replace them with values from your environment.
+
+**Start here:** [IIS setup](docs/01-iis-website-setup.md) → [HTTPS](docs/02-https-win-acme.md) → [Redirect and HSTS](docs/03-redirect-hsts.md) → [Reverse proxy](docs/04-reverse-proxy.md) → [Testing](docs/05-testing-troubleshooting.md)
 
 ## 🎯 Project objectives
 
