@@ -53,6 +53,34 @@ flowchart TD
 
 IIS is the public entry point. It serves website files directly or forwards selected requests to an internal service. Let's Encrypt validates control of the hostname, while win-acme installs the certificate, creates the IIS binding, and schedules renewal.
 
+## 🔑 How the certificate secures the website
+
+A TLS (Transport Layer Security) certificate connects a domain name to a public key. A trusted Certificate Authority (CA), such as Let's Encrypt, signs the certificate after confirming control of the domain. The matching private key stays on the IIS server and is never sent to visitors.
+
+```mermaid
+flowchart TB
+    A["1. win-acme creates a private key and requests a certificate"] --> B["2. Let's Encrypt verifies control of the domain"]
+    B --> C["3. The CA signs a certificate containing the domain and public key"]
+    C --> D["4. IIS installs the certificate and keeps the private key"]
+    D --> E["5. A visitor opens the website with HTTPS"]
+    E --> F["6. IIS sends the certificate to the browser"]
+    F --> G{"7. Does the browser trust it?"}
+    G -->|"Hostname, dates and CA signature are valid"| H["8. IIS proves it owns the matching private key"]
+    G -->|"A check fails"| X["Browser shows a security warning"]
+    H --> I["9. Browser and IIS create temporary session keys"]
+    I --> J["10. Encrypted connection is established"]
+    J --> K["Browser shows the HTTPS security indicator"]
+```
+
+| Security item | What it does |
+|---|---|
+| Private key | Remains on the IIS server and proves that the server owns the certificate. |
+| Public key | Travels inside the certificate and lets the browser verify the server's proof. |
+| CA signature | Lets the browser confirm that a trusted authority issued the certificate for the domain. |
+| Session keys | Encrypt the website traffic after the TLS handshake finishes. |
+
+The browser's HTTPS security indicator means the certificate was accepted and the connection is encrypted. It does not guarantee that the website has no application vulnerabilities. See [HTTPS with win-acme](docs/02-https-win-acme.md) for the implementation steps.
+
 ## 🗺️ Documentation map
 
 | Guide | Purpose |
